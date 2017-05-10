@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <title>Othello</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="Static/CSS/style.css" rel="stylesheet">
+    <script src="Static/JS/Vendor/socket.io.js"></script>
+    <script src="Static/JS/Vendor/angular.min.js"></script>
+    <script src="Static/JS/Vendor/angular-resource.min.js"></script>
+    <script src="Static/JS/Vendor/angular-route.min.js"></script>
+    <script src="Static/JS/Vendor/socket.js"></script>
+    <script src="Static/JS/app.js"></script>
+</head>
+
+<body ng-controller="BaseController as vmBase">
+    <div>
+        <div class="row">
+            <span>Username: </span>
+            <input type="text" name="Username" ng-model="vmBase.signIn.Username" value="">
+        </div>
+        <div class="row">
+            <span>Tournament ID: </span>
+            <input type="number" name="tournament" ng-model="vmBase.signIn.TournamentId" value="">
+        </div>
+        <div class="row">
+            <span>Player Role: </span>
+            <input type="text" name="PlayerRole" value="" ng-model="vmBase.signIn.PlayerRole" ng-disabled="true">
+        </div>
+        <button type="button" ng-click="vmBase.logIn()">Sign In</button>
+    </div>
+    <!--Controlles-->
+    <script src="Static/JS/Controllers/BaseController.js"></script>
+</body>
+
+</html>
