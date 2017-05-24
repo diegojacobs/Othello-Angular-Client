@@ -1,0 +1,28 @@
+<div class="login-wrap">
+    <div class="login-html">
+        <input id="tab-2" type="radio" name="tab" class="sign-up" checked><label for="tab-2" class="tab">Connect</label>
+        <div class="login-form">
+            <div class="sign-up-htm">
+                <div class="group">
+                    <label for="user" class="label">Server</label>
+                    <input type="text" class="input" ng-model="vmLogin.Host">
+                </div>
+                <div class="group">
+                    <label for="pass" class="label">Username</label>
+                    <input type="text" class="input" ng-model="vmLogin.signIn.Username">
+                </div>
+                <div class="group">
+                    <label for="pass" class="label">Tournament ID</label>
+                    <input type="number" class="input" ng-model="vmLogin.signIn.TournamentId">
+                </div>
+                <div class="group">
+                    <label for="pass" class="label">Player Role</label>
+                    <input type="text" class="input" ng-model="vmLogin.signIn.PlayerRole" ng-disabled="true">
+                </div>
+                <div class="group">
+                    <input type="submit" class="button" value="Connect" ng-click="vmLogin.connect()">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
