@@ -1,10 +1,3 @@
-// import { legalMove, transformBoard, mapMatrix } from './game_core';
-// import { 
-//     changeState, 
-//     getOpponentTileColor, 
-//     judge, fullBoard } from './board_functions';
-// import { BLACK, WHITE, N, EMPTY, TERMINAL, SQUARE_WEIGHTS } from './constants';
-
 (function() {
     'use strict';
 

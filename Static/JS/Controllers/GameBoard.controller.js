@@ -45,8 +45,12 @@
             vm.game.finished = false;
             vm.game.id = data.game_id;
             vm.game.turnId = data.player_turn_id;
-            vm.game.board = movesService.transformBoard(data.board);
+            var board = movesService.transformBoard(data.board);
 
+            if (vm.game.board === board)
+                vm.invalidMoves++;
+
+            vm.game.board = board;
             play();
 
             vm.mainSocket.emit('play', {
@@ -73,10 +77,13 @@
             vm.move = 0;
             vm.invalidMoves = 0;
             var win = playerTurnID == winnerTurnID;
+
             if (win)
                 console.log("You Won");
             else
                 console.log("You Lost");
+
+            console.log(vm.invalidMoves);
 
             vm.mainSocket.emit('player_ready', {
                 tournament_id: vm.signIn.TournamentId,
@@ -113,7 +120,7 @@
                     }
                 }
             }
-            console.log(validMoves);
+
             vm.move = validMoves[0];
             console.log("Move: ", vm.move);
         }
