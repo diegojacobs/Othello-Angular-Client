@@ -8,10 +8,11 @@
     gameBoardController.$inject = [
         'socketFactory',
         '$state',
-        '$stateParams'
+        '$stateParams',
+        'MovesService'
     ];
 
-    function gameBoardController(socketFactory, $state, $stateParams) {
+    function gameBoardController(socketFactory, $state, $stateParams, movesService) {
         var vm = this;
 
         //Models
@@ -44,7 +45,7 @@
             vm.game.finished = false;
             vm.game.id = data.game_id;
             vm.game.turnId = data.player_turn_id;
-            vm.game.board = transformBoard(data.board);
+            vm.game.board = movesService.transformBoard(data.board);
 
             play();
 
@@ -104,121 +105,17 @@
 
         function play() {
             var validMoves = [];
-            var otherValid = [];
             for (var x = 0; x < vm.game.board.length; x++) {
                 for (var y = 0; y < vm.game.board[x].length; y++) {
-                    var legal = legalMove(x, y, vm.game.turnId, vm.game.board);
-                    if (legal.legal === true) {
-                        validMoves.push({ pos: (x * 8 + y), weight: legal.weight });
-                        otherValid.push({ x, y });
+                    var isLegal = movesService.legalMove(x, y, vm.game.turnId, vm.game.board);
+                    if (isLegal === true) {
+                        validMoves.push(x * 8 + y);
                     }
                 }
             }
-
-            vm.move = validMoves[0].pos;
+            console.log(validMoves);
+            vm.move = validMoves[0];
             console.log("Move: ", vm.move);
         }
-
-        function transformBoard(board) {
-            var returnArray = [];
-            var innerArray = [];
-            for (var i = 1; i < board.length + 1; i++) {
-                innerArray.push(board[i - 1]);
-                if (i % 8 === 0 && i !== 0) {
-                    returnArray.push(innerArray);
-                    innerArray = [];
-                }
-            }
-            return returnArray;
-        }
-
-
-        function legalMove(r, c, color, boardMod) {
-            var board = boardMod.map(a => Object.assign({}, a));
-            var legalObj = { legal: false, weight: 0 };
-            if (board[r][c] === 0) {
-                // Initialize variables
-                var posX;
-                var posY;
-                var found;
-                var current;
-
-                // Searches in each direction
-                // x and y describe a given direction in 9 directions
-                // 0, 0 is redundant and will break in the first check
-                for (var x = -1; x <= 1; x++) {
-                    for (var y = -1; y <= 1; y++) {
-                        // Variables to keep track of where the algorithm is and
-                        // whether it has found a valid move
-                        posX = c + x;
-                        posY = r + y;
-                        found = false;
-
-                        try {
-                            current = board[posY][posX];
-                        } catch (err) {
-                            continue;
-                        }
-
-                        // Check the first cell in the direction specified by x and y
-                        // If the cell is empty, out of bounds or contains the same color
-                        // skip the rest of the algorithm to begin checking another direction
-                        if (current === undefined || current === 0 || current === color) {
-                            continue;
-                        }
-
-                        // Otherwise, check along that direction
-                        while (!found) {
-                            posX += x;
-                            posY += y;
-
-
-                            try {
-                                current = board[posY][posX];
-                            } catch (err) {
-                                current = undefined;
-                            }
-                            // If the algorithm finds another piece of the same color along a direction
-                            // end the loop to check a new direction, and set legal to true
-                            if (current === color) {
-                                found = true;
-                                legalObj.legal = true;
-                                legalObj.weight += 1
-
-                            }
-                            // If the algorithm reaches an out of bounds area or an empty space
-                            // end the loop to check a new direction, but do not set legal to true yet
-                            else if (current !== 0) {
-                                //keep searching
-                                found = true;
-
-                                while (true) {
-                                    try {
-                                        current = board[posY][posX];
-                                    } catch (err) {
-                                        break;
-                                    }
-                                    posX += x;
-                                    posY += y;
-                                    legalObj.weight += 1;
-                                    if (current === color) {
-                                        legalObj['legal'] = true;
-                                        break;
-                                    }
-                                    if (current === 0 || current === undefined) {
-                                        break;
-                                    }
-
-                                }
-                            } else {
-                                found = true; //current = 0 break looop
-                            }
-                        }
-                    }
-                }
-            }
-            return legalObj;
-        }
-
     }
 })();
