@@ -32,10 +32,10 @@
 
         function legalMovements(board, color) {
             var validMoves = [];
-            var new_board = transformBoard(board);
-            for (var x = 0; x < new_board.length; x++) {
-                for (var y = 0; y < new_board[x].length; y++) {
-                    var isLegal = legalMove(x, y, color, new_board);
+            var newBoard = transformBoard(board);
+            for (var x = 0; x < newBoard.length; x++) {
+                for (var y = 0; y < newBoard[x].length; y++) {
+                    var isLegal = legalMove(x, y, color, newBoard);
                     if (isLegal === true) {
                         validMoves.push(x * constantsService.N + y);
                     }

@@ -14,6 +14,6 @@
         service.Black = 1;
         service.White = 2;
         service.N = 8;
-        service.MaxDepth = 2;
+        service.MaxDepth = 8;
     }
 })();

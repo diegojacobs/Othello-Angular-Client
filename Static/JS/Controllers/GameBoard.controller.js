@@ -19,10 +19,6 @@
         //Models
         vm.Host = $stateParams.host;
         vm.signIn = $stateParams.signIn;
-        connect();
-        logIn();
-
-
         vm.game = {
             id: 0,
             turnId: 0,
@@ -31,11 +27,13 @@
         };
         vm.play = 0;
         vm.invalidMoves = 0;
+        vm.countMoves = 0;
 
         activate();
 
         function activate() {
-
+            connect();
+            logIn();
         }
 
         vm.mainSocket.on('ok_signin', function() {
@@ -53,6 +51,7 @@
 
             vm.game.board = board;
             play();
+            vm.countMoves++;
 
             vm.mainSocket.emit('play', {
                 tournament_id: vm.signIn.TournamentId,
@@ -77,6 +76,7 @@
             };
             vm.move = 0;
             vm.invalidMoves = 0;
+            vm.countMoves = 0;
             var win = playerTurnID == winnerTurnID;
 
             if (win)
@@ -84,7 +84,8 @@
             else
                 console.log("You Lost");
 
-            console.log(vm.invalidMoves);
+            console.log("Total Movements: ", vm.countMoves);
+            console.log("Invalid Movements: ", vm.invalidMoves);
 
             vm.mainSocket.emit('player_ready', {
                 tournament_id: vm.signIn.TournamentId,
@@ -114,6 +115,7 @@
         function play() {
             vm.play = intelligenceService.minimax(vm.game.board, vm.game.turnId, vm.game.turnId, 0, -Infinity, Infinity);
             console.log("Move: ", vm.play);
+            console.log("Valid Moves: ", movesService.legalMovements(vm.game.board, vm.game.turnId));
         }
     }
 })();
