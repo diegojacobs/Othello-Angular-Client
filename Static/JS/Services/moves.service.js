@@ -5,21 +5,24 @@
         .module('app')
         .service('MovesService', movesService);
 
-    movesService.$inject = [];
+    movesService.$inject = [
+        "ConstantsService"
+    ];
 
-    function movesService() {
+    function movesService(constantsService) {
         var service = this;
 
         //Functions
         service.transformBoard = transformBoard;
         service.legalMove = legalMove;
+        service.legalMovements = legalMovements;
 
         function transformBoard(board) {
             var newBoard = [];
             var row = [];
             for (var i = 1; i < board.length + 1; i++) {
                 row.push(board[i - 1]);
-                if (i % 8 === 0 && i !== 0) {
+                if (i % constantsService.N === 0 && i !== 0) {
                     newBoard.push(row);
                     row = [];
                 }
@@ -27,12 +30,27 @@
             return newBoard;
         }
 
+        function legalMovements(board, color) {
+            var validMoves = [];
+            var new_board = transformBoard(board);
+            for (var x = 0; x < new_board.length; x++) {
+                for (var y = 0; y < new_board[x].length; y++) {
+                    var isLegal = legalMove(x, y, color, new_board);
+                    if (isLegal === true) {
+                        validMoves.push(x * constantsService.N + y);
+                    }
+                }
+            }
+
+            return validMoves;
+        }
+
         function legalMove(row, column, color, board) {
             if (board[row][column] !== 0)
                 return false;
 
             var valid = false;
-            var rival = (color === 1) ? 2 : 1;
+            var rival = (color === constantsService.Black) ? constantsService.White : constantsService.Black;
             var left = (column > 0) ? board[row][column - 1] : -1;
             var right = (column < 7) ? board[row][column + 1] : -1;
             var down = (row < 7) ? board[row + 1][column] : -1;

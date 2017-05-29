@@ -9,10 +9,11 @@
         'socketFactory',
         '$state',
         '$stateParams',
-        'MovesService'
+        'MovesService',
+        "IntelligenceService"
     ];
 
-    function gameBoardController(socketFactory, $state, $stateParams, movesService) {
+    function gameBoardController(socketFactory, $state, $stateParams, movesService, intelligenceService) {
         var vm = this;
 
         //Models
@@ -28,7 +29,7 @@
             board: [],
             finished: false
         };
-        vm.move = 0;
+        vm.play = 0;
         vm.invalidMoves = 0;
 
         activate();
@@ -45,7 +46,7 @@
             vm.game.finished = false;
             vm.game.id = data.game_id;
             vm.game.turnId = data.player_turn_id;
-            var board = movesService.transformBoard(data.board);
+            var board = data.board;
 
             if (vm.game.board === board)
                 vm.invalidMoves++;
@@ -57,7 +58,7 @@
                 tournament_id: vm.signIn.TournamentId,
                 player_turn_id: vm.game.turnId,
                 game_id: vm.game.id,
-                movement: Number(vm.move)
+                movement: Number(vm.play.movement)
             });
         });
 
@@ -111,18 +112,8 @@
         }
 
         function play() {
-            var validMoves = [];
-            for (var x = 0; x < vm.game.board.length; x++) {
-                for (var y = 0; y < vm.game.board[x].length; y++) {
-                    var isLegal = movesService.legalMove(x, y, vm.game.turnId, vm.game.board);
-                    if (isLegal === true) {
-                        validMoves.push(x * 8 + y);
-                    }
-                }
-            }
-
-            vm.move = validMoves[0];
-            console.log("Move: ", vm.move);
+            vm.play = intelligenceService.minimax(vm.game.board, vm.game.turnId, vm.game.turnId, 0, -Infinity, Infinity);
+            console.log("Move: ", vm.play);
         }
     }
 })();
