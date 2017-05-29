@@ -24,7 +24,7 @@
             }
 
             // get all valid moves
-            var validMoves = movesService.legalMovements(board, currentColor);
+            var validMoves = movesService.validMovements(board, currentColor);
 
             var newBoards = [];
             // get all possible states from legal moves

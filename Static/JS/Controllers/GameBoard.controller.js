@@ -115,7 +115,7 @@
         function play() {
             vm.play = intelligenceService.minimax(vm.game.board, vm.game.turnId, vm.game.turnId, 0, -Infinity, Infinity);
             console.log("Move: ", vm.play);
-            console.log("Valid Moves: ", movesService.legalMovements(vm.game.board, vm.game.turnId));
+            console.log("Valid Moves: ", movesService.validMovements(vm.game.board, vm.game.turnId));
         }
     }
 })();

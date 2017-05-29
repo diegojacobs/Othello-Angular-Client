@@ -14,8 +14,7 @@
 
         //Functions
         service.transformBoard = transformBoard;
-        service.legalMove = legalMove;
-        service.legalMovements = legalMovements;
+        service.validMovements = validMovements;
 
         function transformBoard(board) {
             var newBoard = [];
@@ -30,13 +29,13 @@
             return newBoard;
         }
 
-        function legalMovements(board, color) {
+        function validMovements(board, color) {
             var validMoves = [];
             var newBoard = transformBoard(board);
             for (var x = 0; x < newBoard.length; x++) {
                 for (var y = 0; y < newBoard[x].length; y++) {
-                    var isLegal = legalMove(x, y, color, newBoard);
-                    if (isLegal === true) {
+                    var isValid = isValidMove(x, y, color, newBoard);
+                    if (isValid === true) {
                         validMoves.push(x * constantsService.N + y);
                     }
                 }
@@ -45,7 +44,7 @@
             return validMoves;
         }
 
-        function legalMove(row, column, color, board) {
+        function isValidMove(row, column, color, board) {
             if (board[row][column] !== 0)
                 return false;
 
