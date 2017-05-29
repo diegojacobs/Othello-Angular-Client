@@ -5,7 +5,7 @@
         .module('app')
         .config(config);
 
-    function config($stateProvider, $urlRouterProvider) {
+    function config($stateProvider, $urlRouterProvider, $locationProvider) {
         $urlRouterProvider.otherwise('/login');
 
         $stateProvider
@@ -27,6 +27,8 @@
                     signIn: null
                 },
             });
+
+        $locationProvider.html5Mode(true);
     }
 
 })();
