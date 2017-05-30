@@ -26,16 +26,16 @@
             // get all valid moves
             var validMoves = movesService.validMovements(board, currentColor);
 
+            if (validMoves === null || validMoves.length === 0) {
+                return { value: (utilService.countPieces(board)[currentColor]), movement: undefined };
+            }
+
             var newBoards = [];
             // get all possible states from legal moves
             for (var i = 0; i < validMoves.length; i++) {
                 var move = validMoves[i];
                 var next = utilService.getNewBoard(board, currentColor, move);
                 newBoards.push({ next: next, movement: move });
-            }
-
-            if (validMoves === null || validMoves.length === 0) {
-                return { value: (utilService.countPieces(board)[currentColor]), movement: undefined };
             }
 
             var nextColor = currentColor === constantsService.Black ? constantsService.White : constantsService.Black;

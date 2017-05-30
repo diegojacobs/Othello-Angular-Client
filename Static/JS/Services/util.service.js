@@ -35,7 +35,7 @@
         function getPositionsToFlip(board, currentColor, position) {
             var otherColor = currentColor === constantsService.Black ? constantsService.White : constantsService.Black;
 
-            var deltaDirections = {
+            var directions = {
                 left: (-1) * constantsService.N + (0), // Left
                 right: 1 * constantsService.N + 0, // Right
                 down: 0 * constantsService.N + 1, // Down
@@ -47,26 +47,27 @@
             };
 
             var lefts = [
-                    deltaDirections.left,
-                    deltaDirections.leftDown,
-                    deltaDirections.leftUp
+                    directions.left,
+                    directions.leftDown,
+                    directions.leftUp
                 ],
                 rights = [
-                    deltaDirections.right,
-                    deltaDirections.rightDown,
-                    deltaDirections.rightUp
+                    directions.right,
+                    directions.rightDown,
+                    directions.rightUp
                 ];
 
             var tilePositionsToFlip = [];
 
             // For each movement direction
-            for (var movementKey in deltaDirections) {
+            for (var movementKey in directions) {
 
                 // Movement delta
-                var movementDelta = deltaDirections[movementKey],
+                var movementDelta = directions[movementKey],
                     cPosition = position,
                     positionsToFlip = [],
-                    foundCurrentColor = false;
+                    foundCurrentColor = false,
+                    changedColor = false;
 
                 // While position is on board
                 while (cPosition >= 0 && cPosition < (constantsService.N * constantsService.N)) {
@@ -75,7 +76,8 @@
                         // If in this new position is an opponent tile
                         if (board[cPosition] === otherColor) {
                             positionsToFlip.push(cPosition);
-                        } else {
+                            changedColor = true;
+                        } else if (changedColor) {
                             foundCurrentColor = board[cPosition] !== constantsService.Empty;
                             break;
                         }

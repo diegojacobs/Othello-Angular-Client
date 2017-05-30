@@ -57,7 +57,7 @@
                 tournament_id: vm.signIn.TournamentId,
                 player_turn_id: vm.game.turnId,
                 game_id: vm.game.id,
-                movement: Number(vm.play.movement)
+                movement: Number((vm.play.movement === undefined) ? Math.random(64) : vm.play.movement)
             });
         });
 
