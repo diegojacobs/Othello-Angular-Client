@@ -59,8 +59,18 @@
                     return { value: v, movement: board.movement };
                 }
             }
+            var x = 0;
+            var index = 0;
+            for (var j = 0; j < newBoards.length; j++) {
+                var temp = utilService.countPieces(newBoards[j].next)[currentColor];
+                if (temp > x) {
+                    index = j;
+                    x = temp;
+                }
 
-            return { value: v, movement: newBoards[0].movement };
+            }
+
+            return { value: v, movement: newBoards[index].movement };
         }
 
         function minValue(newBoards, evaluatingColor, currentColor, depth, max, min) {
@@ -75,8 +85,18 @@
                     return { value: v, movement: board.movement };
                 }
             }
+            var x = Infinity;
+            var index = 0;
+            for (var j = 0; j < newBoards.length; j++) {
+                var temp = utilService.countPieces(newBoards[j].next)[currentColor];
+                if (temp < x) {
+                    index = j;
+                    x = temp;
+                }
 
-            return { value: v, movement: newBoards[0].movement };
+            }
+
+            return { value: v, movement: newBoards[index].movement };
         }
     }
 })();

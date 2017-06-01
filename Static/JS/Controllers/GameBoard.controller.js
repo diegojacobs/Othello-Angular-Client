@@ -57,7 +57,7 @@
                 tournament_id: vm.signIn.TournamentId,
                 player_turn_id: vm.game.turnId,
                 game_id: vm.game.id,
-                movement: Number((vm.play.movement === undefined) ? Math.random(64) : vm.play.movement)
+                movement: Number(vm.play.movement)
             });
         });
 
@@ -115,7 +115,6 @@
         function play() {
             vm.play = intelligenceService.minimax(vm.game.board, vm.game.turnId, vm.game.turnId, 0, -Infinity, Infinity);
             console.log("Move: ", vm.play);
-            console.log("Valid Moves: ", movesService.validMovements(vm.game.board, vm.game.turnId));
         }
     }
 })();
